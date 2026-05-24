@@ -1,55 +1,52 @@
-import type { PlaylistItem, MangaItem } from '@/lib/catalog';
+"use client";
+
+import Link from 'next/link';
+
+import type { LibraryCatalogEntry } from '@/lib/anime-repo';
 
 type MediaCardProps = {
-  item: PlaylistItem | MangaItem;
+  item: LibraryCatalogEntry;
   variant: 'anime' | 'manga';
+  href?: string;
 };
 
-export function MediaCard({ item, variant }: MediaCardProps) {
-  if (variant === 'anime') {
-    const anime = item as PlaylistItem;
-    return (
-      <article className="group rounded-[1.5rem] border border-white/10 bg-ink-900/60 p-5 transition-transform duration-200 hover:-translate-y-1 hover:border-aurora-300/40">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-ember-300">Anime playlist</p>
-            <h3 className="mt-2 text-lg font-semibold text-white">{anime.title}</h3>
-            <p className="mt-1 text-sm text-ink-300">{anime.studio}</p>
-          </div>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-ink-100">{anime.episodeCount} eps</span>
-        </div>
-        <p className="mt-4 text-sm text-ink-200">{anime.progress}</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {anime.tags.map((tag) => (
-            <span key={tag} className="rounded-full bg-white/5 px-3 py-1 text-xs text-ink-100">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </article>
-    );
-  }
-
-  const manga = item as MangaItem;
+export function MediaCard({ item, variant, href }: MediaCardProps) {
   const accentRing =
-    manga.accent === 'ember' ? 'border-ember-300/30 text-ember-200' : manga.accent === 'aurora' ? 'border-aurora-300/30 text-aurora-200' : 'border-white/10 text-white';
+    variant === 'anime' ? 'border-aurora-300/30 text-aurora-200' : item.nsfw ? 'border-ember-300/30 text-ember-200' : 'border-white/10 text-white';
 
-  return (
+  const card = (
     <article className={`rounded-[1.5rem] border bg-ink-900/60 p-5 transition-transform duration-200 hover:-translate-y-1 ${accentRing}`}>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-aurora-300">Manga reader</p>
-          <h3 className="mt-2 text-lg font-semibold text-white">{manga.title}</h3>
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-aurora-300">
+            {variant === 'anime' ? 'Anime source' : 'Manga source'}
+          </p>
+          <h3 className="mt-2 text-lg font-semibold text-white">{item.name}</h3>
+          <p className="mt-1 text-sm text-ink-300">{item.pkg}</p>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-ink-100">{manga.volume}</span>
+        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-ink-100">v{item.version}</span>
       </div>
       <div className="mt-4 flex items-center justify-between text-sm text-ink-200">
-        <span>{manga.chapter}</span>
-        <span>{manga.status}</span>
+        <span>{item.lang}</span>
+        <span>{item.sourceCount} sources</span>
       </div>
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/8">
-        <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-aurora-400 to-ember-400" />
+      <div className="mt-4 flex flex-wrap gap-2 text-xs text-ink-100">
+        <span className="rounded-full bg-white/5 px-3 py-1">code {item.code}</span>
+        <span className="rounded-full bg-white/5 px-3 py-1">{item.nsfw ? 'nsfw' : 'safe'}</span>
+      </div>
+      <div className="mt-5 truncate rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-ink-200">
+        {item.primarySource?.baseUrl || 'No source url'}
       </div>
     </article>
+  );
+
+  if (!href) {
+    return card;
+  }
+
+  return (
+    <Link href={href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900">
+      {card}
+    </Link>
   );
 }

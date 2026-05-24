@@ -1,1 +1,82 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+	--color-ink-50: #f4f7fb;
+	--color-ink-100: #e3e9f2;
+	--color-ink-200: #c8d2e2;
+	--color-ink-300: #9fb0c9;
+	--color-ink-400: #7187a8;
+	--color-ink-500: #4a5f7e;
+	--color-ink-600: #33445d;
+	--color-ink-700: #223148;
+	--color-ink-800: #141d2e;
+	--color-ink-900: #0b111c;
+	--color-aurora-50: #ecfdf7;
+	--color-aurora-100: #d0faea;
+	--color-aurora-200: #a4f1d8;
+	--color-aurora-300: #6fe3c0;
+	--color-aurora-400: #3ccaa2;
+	--color-aurora-500: #1aa385;
+	--color-aurora-600: #12816b;
+	--color-aurora-700: #106753;
+	--color-aurora-800: #0f5344;
+	--color-aurora-900: #0d4439;
+	--color-ember-50: #fff3ed;
+	--color-ember-100: #ffe2d2;
+	--color-ember-200: #ffc4aa;
+	--color-ember-300: #ffa070;
+	--color-ember-400: #ff7b3d;
+	--color-ember-500: #f75a1e;
+	--color-ember-600: #dd4313;
+	--color-ember-700: #b43213;
+	--color-ember-800: #92291a;
+	--color-ember-900: #79251a;
+	--shadow-glow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 24px 80px rgba(6, 11, 20, 0.45);
+	--background-image-grid-fade: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+	--background-image-radial-sheen: radial-gradient(circle at top, rgba(60, 202, 162, 0.18), transparent 44%), radial-gradient(circle at 80% 20%, rgba(247, 90, 30, 0.14), transparent 28%);
+	--animate-drift: drift 10s ease-in-out infinite;
+}
+
+@keyframes drift {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+
+	50% {
+		transform: translate3d(0, -10px, 0) scale(1.02);
+	}
+}
+
+:root {
+	color-scheme: dark;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	background:
+		radial-gradient(circle at top, rgba(60, 202, 162, 0.16), transparent 32%),
+		radial-gradient(circle at 80% 20%, rgba(247, 90, 30, 0.14), transparent 22%),
+		linear-gradient(180deg, #09101a 0%, #060a11 100%);
+	color: #f4f7fb;
+	font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+::selection {
+	background: rgba(60, 202, 162, 0.35);
+	color: white;
+}
