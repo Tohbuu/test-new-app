@@ -13,9 +13,15 @@ type MediaCardProps = {
 export function MediaCard({ item, variant, href }: MediaCardProps) {
   const accentRing =
     variant === 'anime' ? 'border-aurora-300/30 text-aurora-200' : item.nsfw ? 'border-ember-300/30 text-ember-200' : 'border-white/10 text-white';
+  const sourceUrl = item.primarySource?.baseUrl?.trim();
 
   const card = (
-    <article className={`rounded-[1.5rem] border bg-ink-900/60 p-5 transition-transform duration-200 hover:-translate-y-1 ${accentRing}`}>
+    <article className={`relative rounded-[1.5rem] border bg-ink-900/60 p-5 transition-transform duration-200 hover:-translate-y-1 ${accentRing}`}>
+      {href ? (
+        <Link href={href} aria-label={`Open ${item.name} details`} className="absolute inset-0 z-0 rounded-[1.5rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900" />
+      ) : null}
+
+      <div className="relative z-10">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-aurora-300">
@@ -35,18 +41,22 @@ export function MediaCard({ item, variant, href }: MediaCardProps) {
         <span className="rounded-full bg-white/5 px-3 py-1">{item.nsfw ? 'nsfw' : 'safe'}</span>
       </div>
       <div className="mt-5 truncate rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-ink-200">
-        {item.primarySource?.baseUrl || 'No source url'}
+        {sourceUrl ? (
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="relative z-10 block truncate transition hover:text-white hover:underline"
+          >
+            {sourceUrl}
+          </a>
+        ) : (
+          'No source url'
+        )}
+      </div>
       </div>
     </article>
   );
 
-  if (!href) {
-    return card;
-  }
-
-  return (
-    <Link href={href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900">
-      {card}
-    </Link>
-  );
+  return card;
 }

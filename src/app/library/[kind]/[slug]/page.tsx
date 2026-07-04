@@ -34,6 +34,8 @@ export default async function LibraryEntryPage({ params, searchParams }: DetailP
     notFound();
   }
 
+  const primarySourceUrl = entry.primarySource?.baseUrl?.trim();
+
   return (
     <main className="relative overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-grid-fade bg-[size:48px_48px] opacity-[0.08]" />
@@ -75,7 +77,18 @@ export default async function LibraryEntryPage({ params, searchParams }: DetailP
               <div className="rounded-2xl border border-white/10 bg-ink-900/70 p-4">
                 <p className="text-xs uppercase tracking-[0.28em] text-ink-300">Primary source</p>
                 <p className="mt-2 text-white">{entry.primarySource?.name ?? 'Unknown'}</p>
-                <p className="mt-1 text-sm text-ink-300">{entry.primarySource?.baseUrl ?? 'No URL'}</p>
+                {primarySourceUrl ? (
+                  <a
+                    href={primarySourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1 block break-all text-sm text-ink-300 transition hover:text-white hover:underline"
+                  >
+                    {primarySourceUrl}
+                  </a>
+                ) : (
+                  <p className="mt-1 text-sm text-ink-300">No URL</p>
+                )}
               </div>
               <div className="rounded-2xl border border-white/10 bg-ink-900/70 p-4">
                 <p className="text-xs uppercase tracking-[0.28em] text-ink-300">Sources</p>
@@ -89,7 +102,18 @@ export default async function LibraryEntryPage({ params, searchParams }: DetailP
                 <div key={source.id} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-ink-100">
                   <p className="font-medium text-white">{source.name}</p>
                   <p className="mt-1 text-ink-300">{source.lang}</p>
-                  <p className="mt-1 break-all text-ink-300">{source.baseUrl || 'No base URL provided'}</p>
+                  {source.baseUrl ? (
+                    <a
+                      href={source.baseUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-1 block break-all text-ink-300 transition hover:text-white hover:underline"
+                    >
+                      {source.baseUrl}
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-ink-300">No base URL provided</p>
+                  )}
                 </div>
               ))}
             </div>
